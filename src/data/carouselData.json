@@ -1,0 +1,46 @@
+{
+    "slides": [
+        {
+            "src": "https://picsum.photos/seed/img1/600/400",
+            "alt": "Image 1 for carousel",
+            "duration": 3,
+            "isVideo": false
+        },
+        {
+            "src": "https://picsum.photos/seed/img2/600/400",
+            "alt": "Image 2 for carousel",
+            "duration": 3,
+            "isVideo": false
+        },
+        {
+            "src": "https://picsum.photos/seed/img3/600/400",
+            "alt": "Image 3 for carousel",
+            "duration": 3,
+            "isVideo": false
+        },
+        {
+            "src": "https://videos.pexels.com/video-files/9033452/9033452-uhd_1440_2560_25fps.mp4",
+            "alt": "Image 4 for carousel",
+            "duration": 9,
+            "isVideo": true
+        },
+        {
+            "src": "https://picsum.photos/seed/img4/1920/1080",
+            "alt": "Image 3 for carousel",
+            "duration": 3,
+            "isVideo": false
+        },
+        {
+            "src": "https://images.unsplash.com/photo-1553901753-215db344677a?q=80&w=1471&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+            "alt": "Image 4 for carousel",
+            "duration": 3,
+            "isVideo": false
+        },
+        {
+            "src": "https://videos.pexels.com/video-files/9643290/9643290-uhd_2732_1440_25fps.mp4",
+            "alt": "Image 4 for carousel",
+            "duration": 9,
+            "isVideo": true
+        }
+    ]
+}
