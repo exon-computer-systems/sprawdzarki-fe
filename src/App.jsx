@@ -12,7 +12,7 @@ const App = () => {
     const increaseStats = async (materialId, postId, updatedData) => {
         try {
             const materialResponse = await axios.get(
-                `http://http://192.168.68.172:8000/api/materials/${materialId}?populate=posts`
+                `http://192.168.68.172:8000/api/materials/${materialId}?populate=posts`
             );
             const materialData = materialResponse.data.data.attributes;
 
@@ -33,7 +33,7 @@ const App = () => {
             });
 
             const res = await axios.put(
-                `http://http://192.168.68.172:1337/api/materials/${materialId}`,
+                `http://192.168.68.172:8000/api/materials/${materialId}`,
                 {
                     data: {
                         posts: updatedPosts,
@@ -63,7 +63,7 @@ const App = () => {
                     console.log("Active Items:", activeItems);
 
                     if (activeItems) {
-                        setMyPlaylist(activeItems); // Ustawienie stanu
+                        setMyPlaylist(activeItems);
                     }
                 }
             } catch (err) {
@@ -78,30 +78,14 @@ const App = () => {
         <div className="app">
             {/* <Slider /> */}
             {myPlaylist?.attributes?.posts ? (
-                <Carousel data={slides} posts={myPlaylist.attributes.posts} />
+                <Carousel
+                    data={slides}
+                    posts={myPlaylist.attributes.posts}
+                    playlistId={myPlaylist.id}
+                />
             ) : (
-                // <p>lol</p>
                 <p>Loading</p>
             )}
-
-            {/* <button
-                style={{
-                    position: "absolute",
-                    bottom: "20px",
-                    left: "50%",
-                    width: "200px",
-                    height: "50px",
-                }}
-                onClick={() =>
-                    increaseStats(1, 10, {
-                        playsCount: 1,
-                        playsTime: 10,
-                        fullPlaysCount: 1,
-                    })
-                }
-            >
-                Test
-            </button> */}
         </div>
     );
 };
