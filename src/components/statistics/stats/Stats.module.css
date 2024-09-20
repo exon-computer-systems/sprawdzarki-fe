@@ -1,0 +1,43 @@
+.overview {
+  display: flex;
+  justify-content: space-around;
+}
+
+.bar_item {
+  width: 350px;
+
+  padding: 0.5rem 1rem;
+  border: 2px solid #eef1f6;
+  border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.bar_item > p {
+  font-size: 1.5rem;
+  text-align: center;
+  font-weight: 200;
+  color: #5f6c75;
+}
+
+.bar_item > span {
+  font-size: 2.5rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.graph_container {
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.graph {
+  padding: 1rem;
+  border: 2px solid #eef1f6;
+  border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}

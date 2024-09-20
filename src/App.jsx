@@ -6,6 +6,7 @@ import Carousel from "./components/carousel/Carousel";
 import { slides } from "./data/carouselData.json";
 import { useEffect, useState } from "react";
 import PricePreview from "./components/pricePreview/PricePreview";
+import Statistics from "./components/statistics/Statistics";
 // import PricePreview from "./components/pricePreview/PricePreview";
 
 const App = () => {
@@ -32,7 +33,8 @@ const App = () => {
   const increaseStats = async (materialId, postId, updatedData) => {
     try {
       const materialResponse = await axios.get(
-        `http://http://192.168.68.172:8000/api/materials/${materialId}?populate=posts`
+        `http://localhost:1338/api/materials/${materialId}?populate=posts`
+        // `http://http://192.168.68.172:8000/api/materials/${materialId}?populate=posts`
       );
       const materialData = materialResponse.data.data.attributes;
 
@@ -50,7 +52,8 @@ const App = () => {
       });
 
       const res = await axios.put(
-        `http://http://192.168.68.172:8000/api/materials/${materialId}`,
+        `http://localhost:1338/api/materials/${materialId}`,
+        // `http://http://192.168.68.172:8000/api/materials/${materialId}`,
         {
           data: {
             posts: updatedPosts,
@@ -69,7 +72,8 @@ const App = () => {
     const getPosts = async () => {
       try {
         const res = await axios.get(
-          "http://192.168.68.172:8000/api/materials?populate=posts.media"
+          "http://localhost:1338/api/materials?populate=posts.media"
+          // "http://192.168.68.172:8000/api/materials?populate=posts.media"
         );
 
         if (res) {
@@ -93,10 +97,11 @@ const App = () => {
 
   return (
     <div className="app">
+      <Statistics />
       {/* <Slider /> */}
       {/* <PricePreview /> */}
 
-      {myPlaylist?.attributes?.posts ? (
+      {/* {myPlaylist?.attributes?.posts ? (
         <Carousel
           paused={paused}
           setPaused={setPaused}
@@ -105,7 +110,7 @@ const App = () => {
         />
       ) : (
         <p>Loading</p>
-      )}
+      )} */}
 
       {/* <button
                 style={{
