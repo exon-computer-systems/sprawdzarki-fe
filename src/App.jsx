@@ -6,6 +6,7 @@ import Carousel from "./components/carousel/Carousel";
 import { slides } from "./data/carouselData.json";
 import { useEffect, useState } from "react";
 import PricePreview from "./components/pricePreview/PricePreview";
+import Statistics from "./components/statistics/Statistics";
 // import PricePreview from "./components/pricePreview/PricePreview";
 
 const App = () => {
@@ -33,8 +34,8 @@ const App = () => {
         const getPosts = async () => {
             try {
                 const res = await axios.get(
-                    // "http://192.168.68.172:8000/api/materials?populate=posts.media"
                     "http://localhost:1338/api/materials?populate=posts.media"
+                    // "http://192.168.68.172:8000/api/materials?populate=posts.media"
                 );
 
                 if (res) {
@@ -58,17 +59,20 @@ const App = () => {
 
     return (
         <div className="app">
-            {myPlaylist?.attributes?.posts ? (
-                <Carousel
-                    paused={paused}
-                    setPaused={setPaused}
-                    data={slides}
-                    posts={myPlaylist.attributes.posts}
-                    playlistId={myPlaylist.id}
-                />
-            ) : (
-                <p>Loading</p>
-            )}
+            <Statistics />
+            {/* <Slider /> */}
+            {/* <PricePreview /> */}
+
+            {/* {myPlaylist?.attributes?.posts ? (
+        <Carousel
+          paused={paused}
+          setPaused={setPaused}
+          data={slides}
+          posts={myPlaylist.attributes.posts}
+        />
+      ) : (
+        <p>Loading</p>
+      )} */}
         </div>
     );
 };
