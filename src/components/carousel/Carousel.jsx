@@ -43,7 +43,7 @@ const Carousel = ({ data, posts, playlistId }) => {
         // console.log(materialId, postId, updatedData);
         try {
             const materialResponse = await axios.get(
-                `http://192.168.68.172:8000/api/materials/${materialId}?populate=posts`
+                `http://localhost:1338/api/materials/${materialId}?populate=posts`
             );
             const materialData = materialResponse.data.data.attributes;
 
@@ -66,7 +66,7 @@ const Carousel = ({ data, posts, playlistId }) => {
             });
 
             const res = await axios.put(
-                `http://192.168.68.172:8000/api/materials/${materialId}`,
+                `http://localhost:1338/api/materials/${materialId}`,
                 {
                     data: {
                         posts: updatedPosts,

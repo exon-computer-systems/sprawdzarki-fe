@@ -5,54 +5,36 @@ import Carousel from "./components/carousel/Carousel";
 
 import { slides } from "./data/carouselData.json";
 import { useEffect, useState } from "react";
+import PricePreview from "./components/pricePreview/PricePreview";
+// import PricePreview from "./components/pricePreview/PricePreview";
 
 const App = () => {
     const [myPlaylist, setMyPlaylist] = useState({});
+    const [paused, setPaused] = useState(false); // New state to handle pause
 
-    const increaseStats = async (materialId, postId, updatedData) => {
-        try {
-            const materialResponse = await axios.get(
-                `http://192.168.68.172:8000/api/materials/${materialId}?populate=posts`
-            );
-            const materialData = materialResponse.data.data.attributes;
-
-            const updatedPosts = materialData.posts.map((post) => {
-                if (post.id === postId) {
-                    return {
-                        ...post,
-                        playsCount:
-                            post.playsCount + (updatedData.playsCount || 0),
-                        playsTime:
-                            post.playsTime + (updatedData.playsTime || 0),
-                        fullPlaysCount:
-                            post.fullPlaysCount +
-                            (updatedData.fullPlaysCount || 0),
-                    };
-                }
-                return post;
-            });
-
-            const res = await axios.put(
-                `http://192.168.68.172:8000/api/materials/${materialId}`,
-                {
-                    data: {
-                        posts: updatedPosts,
-                    },
-                }
-            );
-
-            console.log(res);
-        } catch (err) {
-            console.warn(err);
-        } finally {
-        }
-    };
+    // Intercept the scanner API call
+    // function triggerScanner() {
+    //     fetch(
+    //         `http://swpl0003001.store.obi.net:8080/Kis/priceCheck.do?eaninput=${3399318}&mode=pricecheck`,
+    //         { method: "POST" }
+    //     )
+    //         .then((response) => response.json())
+    //         .then((data) => {
+    //             if (data.success) {
+    //                 onScan(); // Trigger the scan event
+    //             }
+    //         })
+    //         .catch((error) => {
+    //             console.error("Scanner API call failed", error);
+    //         });
+    // }
 
     useEffect(() => {
         const getPosts = async () => {
             try {
                 const res = await axios.get(
-                    "http://192.168.68.172:8000/api/materials?populate=posts.media"
+                    // "http://192.168.68.172:8000/api/materials?populate=posts.media"
+                    "http://localhost:1338/api/materials?populate=posts.media"
                 );
 
                 if (res) {
@@ -63,7 +45,7 @@ const App = () => {
                     console.log("Active Items:", activeItems);
 
                     if (activeItems) {
-                        setMyPlaylist(activeItems);
+                        setMyPlaylist(activeItems); // Ustawienie stanu
                     }
                 }
             } catch (err) {
@@ -76,9 +58,10 @@ const App = () => {
 
     return (
         <div className="app">
-            {/* <Slider /> */}
             {myPlaylist?.attributes?.posts ? (
                 <Carousel
+                    paused={paused}
+                    setPaused={setPaused}
                     data={slides}
                     posts={myPlaylist.attributes.posts}
                     playlistId={myPlaylist.id}
