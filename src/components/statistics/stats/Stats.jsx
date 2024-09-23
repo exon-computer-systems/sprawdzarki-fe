@@ -1,17 +1,24 @@
-import * as React from "react";
+import { useState } from "react";
 import { BarChart } from "@mui/x-charts/BarChart";
 import styles from "./Stats.module.css";
-const Stats = ({ playsTimeData, brandNames }) => {
+const Stats = ({ playsTimeData, brandNames, playlistStats }) => {
+  const getTotalTime = () => {
+    return playlistStats
+      .filter(e => e.playsTime >= 0)
+      .map(e => e.playsTime)
+      .reduce((acc, curr) => acc + curr, 0);
+  };
+
   return (
     <>
       <section className={styles.overview}>
         <section className={styles.bar_item}>
           <p>Ilość reklam</p>
-          <span>3</span>
+          <span>{playlistStats.length}</span>
         </section>
         <section className={styles.bar_item}>
           <p>Całkowity czas</p>
-          <span>2000 sek</span>
+          <span>{getTotalTime()} sek</span>
         </section>
         <section className={styles.bar_item}>
           <p>Wyświetlone reklamy</p>
@@ -25,7 +32,9 @@ const Stats = ({ playsTimeData, brandNames }) => {
             xAxis={[
               {
                 id: "barCategories",
-                data: ["Bosch", "Makita", "Amica"],
+                data: brandNames.length
+                  ? brandNames
+                  : ["Bosch", "Makita", "Amica"],
                 scaleType: "band",
               },
             ]}

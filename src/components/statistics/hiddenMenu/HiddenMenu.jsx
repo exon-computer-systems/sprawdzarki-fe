@@ -1,7 +1,12 @@
 import styles from "./HiddenMenu.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
-const HiddenMenu = ({ closeMenu }) => {
+const HiddenMenu = ({
+  closeMenu,
+  setChangePlaylist,
+  displayPlaylists,
+  setPlaylistName,
+}) => {
   return (
     <section className={styles.container}>
       <section className={styles.heading}>
@@ -10,12 +15,21 @@ const HiddenMenu = ({ closeMenu }) => {
         </button>
         <h2 className={styles.heading}>Dashboard</h2>
       </section>
-      <section className={styles.wrapper}>
-        <span className={styles.divider}></span>
-        <section className={styles.option}>Playlist1</section>
-        <span className={styles.divider}></span>
-        <section className={styles.option}>Playlist2</section>
-      </section>
+      {displayPlaylists.map((e, index) => (
+        <section className={styles.wrapper} key={e.id}>
+          <span className={styles.divider}></span>
+
+          <section
+            onClick={() => {
+              setChangePlaylist(index);
+              setPlaylistName(e.attributes.title);
+            }}
+            className={styles.option}
+          >
+            {e.attributes.title}
+          </section>
+        </section>
+      ))}
     </section>
   );
 };
