@@ -1,6 +1,7 @@
 .overview {
   display: flex;
-  justify-content: space-around;
+  justify-content: flex-start;
+  gap: 1rem;
 }
 
 .bar_item {
@@ -30,7 +31,8 @@
 .graph_container {
   width: 100%;
   display: flex;
-  justify-content: space-evenly;
+  justify-content: flex-start;
+  gap: 1rem;
 }
 
 .graph {

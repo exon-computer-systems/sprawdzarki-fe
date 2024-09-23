@@ -1,4 +1,4 @@
-import styles from "./Statistics.module.css";
+import styles from "./Dashboard.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBars,
@@ -8,66 +8,61 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import { useEffect, useState } from "react";
-
 import Stats from "./stats/Stats";
 import HiddenMenu from "./hiddenMenu/HiddenMenu";
 
 const Statistics = () => {
-  const [getStats, setGetStats] = useState([]);
+  const [playlistStats, setPlaylistStats] = useState([]);
   const [activeFilter, setActiveFilter] = useState("stats");
-  const [changePlaylist, setChangePlaylist] = useState(0);
-  const [toggleMenu, setToggleMenu] = useState(false);
+  const [currentPlaylistIndex, setCurrentPlaylistIndex] = useState(0);
+  const [menuVisible, setMenuVisible] = useState(false);
+  const [playlists, setPlaylists] = useState([]);
+  const [currentPlaylistName, setCurrentPlaylistName] = useState("");
 
-  const handleOpenMenu = () => {
-    setToggleMenu(() => true);
-  };
-
-  const handleCloseMenu = () => {
-    setToggleMenu(() => false);
-  };
+  const toggleMenu = isVisible => setMenuVisible(isVisible);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchPlaylists = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:1338/api/materials?populate=posts"
+          "http://localhost:1338/api/materials?populate=posts.media&populate=posts.brand"
         );
-        const posts = response.data.data[0].attributes.posts;
-        if (Array.isArray(posts)) {
-          setGetStats(posts);
-        } else {
-          console.error("Posts data is not an array");
-        }
+        const data = response.data.data;
+        setPlaylists(data);
 
-        if (Array.isArray(posts)) {
-          setGetStats(posts);
-        } else {
-          console.error("Posts data is not an array");
+        if (data[currentPlaylistIndex]) {
+          const playlist = data[currentPlaylistIndex];
+          setPlaylistStats(playlist.attributes.posts);
+          setCurrentPlaylistName(playlist.attributes.title);
         }
       } catch (err) {
-        console.error(err);
+        console.error("Failed to fetch playlists", err);
       }
     };
-    fetchData();
-  }, []);
 
-  const brandNames = Array.isArray(getStats)
-    ? getStats.map(item => item.brand || "Unknown Brand")
-    : [];
+    fetchPlaylists();
+  }, [currentPlaylistIndex]);
 
-  const playsTimeData = Array.isArray(getStats)
-    ? getStats.map(item => item.playsTime || 0)
-    : [];
-
-  console.log(getStats);
+  const brandNames = playlistStats.map(
+    item => item.brand.data?.attributes.companyName || "Unknown Brand"
+  );
+  console.log("brandNames", brandNames);
+  const playsTimeData = playlistStats.map(item => item.playsTime || 0);
 
   return (
     <section className={styles.container}>
-      {toggleMenu && <HiddenMenu closeMenu={handleCloseMenu} />}
+      {menuVisible && (
+        <HiddenMenu
+          closeMenu={() => toggleMenu(false)}
+          setChangePlaylist={setCurrentPlaylistIndex}
+          displayPlaylists={playlists}
+          setPlaylistName={setCurrentPlaylistName}
+        />
+      )}
       <section className={styles.wrapper}>
         <section className={styles.nav}>
           <div className={styles.menu_bar}>
-            <button className={styles.menu} onClick={handleOpenMenu}>
+            <button className={styles.menu} onClick={() => toggleMenu(true)}>
               <FontAwesomeIcon icon={faBars} />
             </button>
             <h3>Dashboard</h3>
@@ -79,9 +74,9 @@ const Statistics = () => {
             </a>
           </div>
         </section>
-        <secion className={styles.playlist_name}>
-          <h3>Playlist1</h3>
-        </secion>
+        <section className={styles.playlist_name}>
+          <h3>{currentPlaylistName}</h3>
+        </section>
         <section className={styles.filters}>
           <section className={styles.analytics}>
             <span
@@ -109,10 +104,12 @@ const Statistics = () => {
       </section>
 
       <section className={styles.graphs_section}>
-        {activeFilter === "stats" ? (
-          <Stats playsTimeData={playsTimeData} brandNames={brandNames} />
-        ) : (
-          ""
+        {activeFilter === "stats" && (
+          <Stats
+            playsTimeData={playsTimeData}
+            brandNames={brandNames}
+            playlistStats={playlistStats}
+          />
         )}
       </section>
     </section>

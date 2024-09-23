@@ -7,7 +7,7 @@ import Carousel from "./components/carousel/Carousel";
 import { slides } from "./data/carouselData.json";
 import { useEffect, useRef, useState } from "react";
 import PricePreview from "./components/pricePreview/PricePreview";
-import Statistics from "./components/statistics/Statistics";
+import Dashboard from "./components/dashboard/Dashboard";
 // import PricePreview from "./components/pricePreview/PricePreview";
 
 import XMLParser from "react-xml-parser";
