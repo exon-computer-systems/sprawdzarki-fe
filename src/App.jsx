@@ -10,8 +10,6 @@ import PricePreview from "./components/pricePreview/PricePreview";
 import Dashboard from "./components/dashboard/Dashboard";
 // import PricePreview from "./components/pricePreview/PricePreview";
 
-import XMLParser from "react-xml-parser";
-
 const App = () => {
     const [myPlaylist, setMyPlaylist] = useState({});
     const [paused, setPaused] = useState(false); // New state to handle pause
