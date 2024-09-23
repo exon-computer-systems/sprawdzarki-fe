@@ -1,4 +1,4 @@
-import styles from "./Statistics.module.css";
+import styles from "./Dashboard.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBars,
@@ -41,7 +41,7 @@ const Statistics = () => {
     };
 
     fetchPlaylists();
-  }, [currentPlaylistIndex]); // Re-fetch data when current playlist index changes
+  }, [currentPlaylistIndex]);
 
   const brandNames = playlistStats.map(
     item => item.brand.data?.attributes.companyName || "Unknown Brand"
