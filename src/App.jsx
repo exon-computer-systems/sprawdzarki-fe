@@ -8,6 +8,7 @@ import { slides } from "./data/carouselData.json";
 import { useEffect, useRef, useState } from "react";
 import PricePreview from "./components/pricePreview/PricePreview";
 import Dashboard from "./components/dashboard/Dashboard";
+import Statistics from "./components/dashboard/Dashboard";
 // import PricePreview from "./components/pricePreview/PricePreview";
 
 const App = () => {
@@ -93,8 +94,6 @@ const App = () => {
     return (
         <div className="app">
             {/* <Statistics /> */}
-            {/* <Slider /> */}
-            {/* <PricePreview /> */}
 
             {myPlaylist?.attributes?.posts ? (
                 <Carousel
@@ -108,6 +107,7 @@ const App = () => {
             ) : (
                 <p>Loading</p>
             )}
+
             <form className="hidden-form" onSubmit={handleSubmit}>
                 <input
                     className="hidden-input"
