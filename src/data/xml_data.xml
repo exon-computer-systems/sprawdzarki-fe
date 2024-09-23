@@ -1,0 +1,17 @@
+<result>
+  <plu>Piec Stalowy</plu>
+  <vk>5499.00</vk>
+  <ean>3399318</ean>
+  <rabatt>0</rabatt>
+  <errorcode>0</errorcode>
+  <errordesc>Success.</errordesc>
+</result>
+
+<!-- <hash>
+    <id type="integer">1</id>
+    <name>Karl Zboncak</name>
+    <email>viva@keebler.biz</email>
+    <avatar>https://robohash.org/sequiquiaporro.png?size=300x300&set=set1</avatar>
+    <created-at>2021-06-24T15:45:46.667Z</created-at>
+    <updated-at>2021-06-24T15:45:46.667Z</updated-at>
+</hash> -->
