@@ -1,13 +1,36 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BarChart } from "@mui/x-charts/BarChart";
+import { PieChart } from "@mui/x-charts/PieChart";
 import styles from "./Stats.module.css";
 const Stats = ({ playsTimeData, brandNames, playlistStats }) => {
+  const [getPercentage, setGetPercentage] = useState([]);
   const getTotalTime = () => {
     return playlistStats
       .filter(e => e.playsTime >= 0)
       .map(e => e.playsTime)
       .reduce((acc, curr) => acc + curr, 0);
   };
+
+  useEffect(() => {
+    const totalPlays = playlistStats.reduce(
+      (acc, ad) => acc + ad.playsCount,
+      0
+    );
+
+    const formattedData = playlistStats.map(ad => ({
+      id: ad.id,
+      value: ((ad.playsCount / totalPlays) * 100).toFixed(2),
+      label: ad.title,
+    }));
+
+    setGetPercentage(formattedData);
+  }, [playlistStats]);
+
+  const getTotalPercent = () => {
+    console.log(playlistStats.filter(e => e.playsCount >= 0));
+  };
+
+  getTotalPercent();
 
   return (
     <>
@@ -60,6 +83,26 @@ const Stats = ({ playsTimeData, brandNames, playlistStats }) => {
             height={150}
             xAxis={[{ data: ["Q1", "Q2", "Q3", "Q4"], scaleType: "band" }]}
             margin={{ top: 10, bottom: 30, left: 40, right: 10 }}
+          />
+        </section>
+        <section className={`${styles.graph} ${styles.quarter_stats}`}>
+          <h2>
+            Procentowy udział reklam na podstawie ogólnej liczby odtworzeń
+          </h2>
+          <PieChart
+            series={[
+              {
+                data: getPercentage,
+                highlightScope: { fade: "global", highlight: "item" },
+                faded: {
+                  innerRadius: 30,
+                  additionalRadius: -30,
+                  color: "gray",
+                },
+              },
+            ]}
+            width={400}
+            height={200}
           />
         </section>
       </section>
