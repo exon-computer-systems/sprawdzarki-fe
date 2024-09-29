@@ -52,6 +52,7 @@ const App = () => {
         e.preventDefault();
 
         try {
+            // zmienic link na srodowisko testowe
             const res = await axios.get(
                 "https://thetestrequest.com/authors/1.xml",
                 {
@@ -80,9 +81,11 @@ const App = () => {
             });
 
             // setProductData({
-            //     name: xml.querySelector("name").textContent,
-            //     email: xml.querySelector("email").textContent,
+            //     plu: xml.querySelector("name").textContent,
+            //     vk: xml.querySelector("email").textContent,
             // });
+
+            console.log(productData);
         } catch (err) {
             console.warn(err);
         } finally {
