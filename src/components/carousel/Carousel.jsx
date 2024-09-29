@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
-import axios from "axios";
+import { axiosSlider } from "../../api/axios";
 import styles from "./Carousel.module.css";
+import ProductPreview from "../productPreview/ProductPreview";
 
-const Carousel = ({ data, posts, playlistId }) => {
+const Carousel = ({ data, posts, playlistId, productData }) => {
     const [playlistData, setPlaylistData] = useState("");
     const [slide, setSlide] = useState(0);
     const [playStartTime, setPlayStartTime] = useState(Date.now());
@@ -42,9 +43,10 @@ const Carousel = ({ data, posts, playlistId }) => {
     const increaseStats = async (materialId, postId, updatedData) => {
         // console.log(materialId, postId, updatedData);
         try {
-            const materialResponse = await axios.get(
-                `http://localhost:1338/api/materials/${materialId}?populate=posts`
+            const materialResponse = await axiosSlider.get(
+                `/api/materials/${materialId}?populate=posts`
             );
+
             const materialData = materialResponse.data.data.attributes;
 
             const updatedPosts = materialData.posts.map((post) => {
@@ -65,16 +67,13 @@ const Carousel = ({ data, posts, playlistId }) => {
                 return post;
             });
 
-            const res = await axios.put(
-                `http://localhost:1338/api/materials/${materialId}`,
-                {
-                    data: {
-                        posts: updatedPosts,
-                    },
-                }
-            );
+            const res = await axiosSlider.put(`/api/materials/${materialId}`, {
+                data: {
+                    posts: updatedPosts,
+                },
+            });
 
-            console.log(res);
+            // console.log(res);
         } catch (err) {
             console.warn(err);
         } finally {
@@ -102,16 +101,22 @@ const Carousel = ({ data, posts, playlistId }) => {
     };
 
     const handleEnd = () => {
+        console.log("test");
         clearTimeout(timeoutRef.current);
         setSlide(slide === playlistData.length - 1 ? 0 : slide + 1);
     };
 
+    useEffect(() => {
+        if (productData) {
+            handleEnd();
+        }
+    }, [productData]);
+
     return (
         <>
-            <section
-                className={styles.carousel}
-                // onClick={() => handleEnd()}
-            >
+            {productData && <ProductPreview data={productData} />}
+
+            <section className={styles.carousel}>
                 {playlistData ? (
                     playlistData.map((el, idx) => {
                         // console.log(el);
