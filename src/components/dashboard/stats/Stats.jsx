@@ -32,6 +32,10 @@ const Stats = ({ playsTimeData, brandNames, playlistStats }) => {
 
   getTotalPercent();
 
+  const getTotalAds = () => {
+    return playlistStats.reduce((acc, curr) => acc + curr.playsCount, 0);
+  };
+
   return (
     <>
       <section className={styles.overview}>
@@ -42,6 +46,10 @@ const Stats = ({ playsTimeData, brandNames, playlistStats }) => {
         <section className={styles.bar_item}>
           <p>Całkowity czas</p>
           <span>{getTotalTime()} sek</span>
+        </section>
+        <section className={styles.bar_item}>
+          <p>Łączna ilość odtworzeń</p>
+          <span>{getTotalAds()}</span>
         </section>
         <section className={styles.bar_item}>
           <p>Wyświetlone reklamy</p>
