@@ -10,6 +10,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import Stats from "./stats/Stats";
 import HiddenMenu from "./hiddenMenu/HiddenMenu";
+import Table from "./table/Table";
 
 const Statistics = () => {
   const [playlistStats, setPlaylistStats] = useState([]);
@@ -104,10 +105,16 @@ const Statistics = () => {
       </section>
 
       <section className={styles.graphs_section}>
-        {activeFilter === "stats" && (
+        {activeFilter === "stats" ? (
           <Stats
             playsTimeData={playsTimeData}
             brandNames={brandNames}
+            playlistStats={playlistStats}
+          />
+        ) : (
+          <Table
+            brandNames={brandNames}
+            playsTimeData={playsTimeData}
             playlistStats={playlistStats}
           />
         )}
