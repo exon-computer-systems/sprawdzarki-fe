@@ -16,36 +16,52 @@ const App = () => {
     const [paused, setPaused] = useState(false); // New state to handle pause
     const [productEan, setProductEan] = useState("");
     const [productData, setProductData] = useState("");
+    const [currentPostIndex, setCurrentPostIndex] = useState(0);
     const inputRef = useRef(0);
 
-    useEffect(() => {
-        const getPosts = async () => {
-            try {
-                const res = await axiosSlider.get(
-                    "/api/materials?populate=posts.media"
-                    // "http://192.168.68.172:8000/api/materials?populate=posts.media"
+    const fetchPlaylist = async () => {
+        try {
+            const res = await axiosSlider.get(
+                "/api/materials?populate=posts.media"
+            );
+
+            if (res) {
+                const activeItems = res.data.data.find(
+                    (item) => item.attributes.isActive === true
                 );
 
-                if (res) {
-                    const activeItems = res.data.data.find(
-                        (item) => item.attributes.isActive === true
-                    );
+                console.log("Active Items:", activeItems);
 
-                    console.log("Active Items:", activeItems);
-
-                    if (activeItems) {
-                        setMyPlaylist(activeItems);
-                    }
+                if (activeItems) {
+                    setMyPlaylist(activeItems);
+                    setCurrentPostIndex(0);
                 }
-            } catch (err) {
-                console.warn(err);
             }
-        };
+        } catch (err) {
+            console.warn(err);
+        }
+    };
 
-        getPosts();
-
-        inputRef.current.focus();
+    useEffect(() => {
+        fetchPlaylist();
     }, []);
+
+    useEffect(() => {
+        console.log(currentPostIndex, myPlaylist?.attributes?.posts?.length);
+
+        if (
+            myPlaylist?.attributes?.posts &&
+            currentPostIndex >= myPlaylist.attributes.posts.length
+        ) {
+            // If we reached the last post, fetch the playlist again
+            fetchPlaylist();
+        }
+    }, [currentPostIndex, myPlaylist]);
+
+    const handlePostChange = (index) => {
+        // Call this when post changes in your carousel
+        setCurrentPostIndex(index);
+    };
 
     // getting data of scanned product
     const handleSubmit = async (e) => {
@@ -65,20 +81,22 @@ const App = () => {
             // console.log(xml.querySelector("name").textContent);
 
             setProductData({
-                plu: "Piec Stalowy",
-                vk: 5499.0,
-                ean: 3399318,
-                rabatt: 0,
-                errorcode: 0,
-                errordesc: "Success.",
-
-                // plu: xml.querySelector("plu").textContent,
-                // vk: xml.querySelector("vk").textContent,
-                // ean: xml.querySelector("ean").textContent,
-                // rabatt: xml.querySelector("rabatt").textContent,
-                // errorcode: xml.querySelector("errorcode").textContent,
-                // errordesc: xml.querySelector("errordesc").textContent,
+                plu: xml.querySelector("plu").textContent,
+                vk: xml.querySelector("vk").textContent,
+                ean: xml.querySelector("ean").textContent,
+                rabatt: xml.querySelector("rabatt").textContent,
+                errorcode: xml.querySelector("errorcode").textContent,
+                errordesc: xml.querySelector("errordesc").textContent,
             });
+
+            // setProductData({
+            //     plu: "Piec Stalowy",
+            //     vk: 5499.0,
+            //     ean: 3399318,
+            //     rabatt: 0,
+            //     errorcode: 0,
+            //     errordesc: "Success.",
+            // });
 
             // setProductData({
             //     plu: xml.querySelector("name").textContent,
@@ -106,6 +124,8 @@ const App = () => {
                     posts={myPlaylist.attributes.posts}
                     playlistId={myPlaylist.id}
                     productData={productData}
+                    handlePostChange={handlePostChange}
+                    fetchPlaylist={fetchPlaylist}
                 />
             ) : (
                 <p>Loading</p>
