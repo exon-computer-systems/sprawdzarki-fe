@@ -19,7 +19,8 @@ const Statistics = () => {
   const [menuVisible, setMenuVisible] = useState(false);
   const [playlists, setPlaylists] = useState([]);
   const [currentPlaylistName, setCurrentPlaylistName] = useState("");
-
+  const [isAdminPanel, setIsAdminPanel] = useState(false);
+  
   const toggleMenu = isVisible => setMenuVisible(isVisible);
 
   useEffect(() => {
@@ -50,6 +51,10 @@ const Statistics = () => {
   console.log("brandNames", brandNames);
   const playsTimeData = playlistStats.map(item => item.playsTime || 0);
 
+  const toggleAdminPanel = () => {
+    setIsAdminPanel(!isAdminPanel);
+  };
+
   return (
     <section className={styles.container}>
       {menuVisible && (
@@ -68,56 +73,79 @@ const Statistics = () => {
             </button>
             <h3>Dashboard</h3>
           </div>
+
           <div className={styles.admin_panel}>
-            <a href="http://localhost:1338/admin">
-              <p>Przejdź do panelu admina</p>
-              <FontAwesomeIcon icon={faArrowUpRightFromSquare} />
-            </a>
+            <button 
+              onClick={toggleAdminPanel} 
+              className={styles.admin_button}
+            >
+              <p>
+                {isAdminPanel
+                  ? "Przejdź do panelu statystyk"
+                  : "Przejdź do panelu admina"}
+              </p>
+              <FontAwesomeIcon icon={faArrowUpRightFromSquare} style={{marginLeft: '10px'}} />
+            </button>
           </div>
+
         </section>
+
         <section className={styles.playlist_name}>
           <h3>{currentPlaylistName}</h3>
         </section>
-        <section className={styles.filters}>
-          <section className={styles.analytics}>
-            <span
-              onClick={() => setActiveFilter("stats")}
-              className={`${styles.option} ${
-                activeFilter === "stats" && styles.active
-              }`}
-            >
-              <FontAwesomeIcon icon={faChartColumn} />
-              <p>Statystyki</p>
-            </span>
-            <span className={styles.divider}></span>
-            <span
-              onClick={() => setActiveFilter("table")}
-              className={`${styles.option} ${
-                activeFilter === "table" && styles.active
-              }`}
-            >
-              <FontAwesomeIcon icon={faTable} />
-              <p>Tabela</p>
-            </span>
-          </section>
-        </section>
-        <span className={styles.section_divider}></span>
-      </section>
 
-      <section className={styles.graphs_section}>
-        {activeFilter === "stats" ? (
-          <Stats
-            playsTimeData={playsTimeData}
-            brandNames={brandNames}
-            playlistStats={playlistStats}
-          />
-        ) : (
-          <Table
-            brandNames={brandNames}
-            playsTimeData={playsTimeData}
-            playlistStats={playlistStats}
-          />
-        )}
+        <section className={styles.iframe}>
+          {isAdminPanel ? (
+            <iframe
+              src="http://localhost:1337/admin" // można zmienić na inny port/link
+              title="Admin Panel"
+              className={styles.iframe}
+            ></iframe>
+          ) : (
+            <>
+              <section className={styles.filters}>
+                <section className={styles.analytics}>
+                  <span
+                    onClick={() => setActiveFilter("stats")}
+                    className={`${styles.option} ${
+                      activeFilter === "stats" && styles.active
+                    }`}
+                  >
+                    <FontAwesomeIcon icon={faChartColumn} />
+                    <p>Statystyki</p>
+                  </span>
+                  <span className={styles.divider}></span>
+                  <span
+                    onClick={() => setActiveFilter("table")}
+                    className={`${styles.option} ${
+                      activeFilter === "table" && styles.active
+                    }`}
+                  >
+                    <FontAwesomeIcon icon={faTable} />
+                    <p>Tabela</p>
+                  </span>
+                </section>
+              </section>
+              <span className={styles.section_divider}></span>
+
+              <section className={styles.graphs_section}>
+                {activeFilter === "stats" ? (
+                  <Stats
+                    playsTimeData={playsTimeData}
+                    brandNames={brandNames}
+                    playlistStats={playlistStats}
+                  />
+                ) : (
+                  <Table
+                    brandNames={brandNames}
+                    playsTimeData={playsTimeData}
+                    playlistStats={playlistStats}
+                  />
+                )}
+              </section>
+            </>
+          )}
+        </section>
       </section>
     </section>
   );
