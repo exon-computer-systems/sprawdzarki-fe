@@ -4,7 +4,6 @@ import styles from "./Carousel.module.css";
 import ProductPreview from "../productPreview/ProductPreview";
 
 const Carousel = ({
-    data,
     posts,
     playlistId,
     productData,
