@@ -1,6 +1,6 @@
 import axios from "axios";
-const SLIDER_URL = "http://127.0.0.1:1338";
-const PRODUCT_URL = "http://swpl0003001.store.obi.net:8080";
+const SLIDER_URL = "http://192.168.68.247:1338";
+const PRODUCT_URL = "http://192.168.68.247:8080";
 
 export const axiosSlider = axios.create({
     baseURL: SLIDER_URL,
