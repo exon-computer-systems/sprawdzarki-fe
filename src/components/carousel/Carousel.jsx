@@ -3,13 +3,7 @@ import { axiosSlider } from "../../api/axios";
 import styles from "./Carousel.module.css";
 import ProductPreview from "../productPreview/ProductPreview";
 
-const Carousel = ({
-    posts,
-    playlistId,
-    productData,
-    handlePostChange,
-    fetchPlaylist,
-}) => {
+const Carousel = ({ data, posts, playlistId, productData }) => {
     const [playlistData, setPlaylistData] = useState("");
     const [slide, setSlide] = useState(0);
     const [delay, setDelay] = useState(0);
@@ -33,13 +27,7 @@ const Carousel = ({
         }
 
         timeoutRef.current = setTimeout(() => {
-            const nextSlide = slide === playlistData.length - 1 ? 0 : slide + 1;
-            setSlide(nextSlide);
-            handlePostChange(nextSlide);
-
-            if (nextSlide === 0) {
-                fetchPlaylist();
-            }
+            setSlide(slide === playlistData.length - 1 ? 0 : slide + 1);
         }, currentSlideDuration);
 
         return () => clearTimeout(timeoutRef.current);
@@ -111,6 +99,7 @@ const Carousel = ({
     };
 
     const handleEnd = () => {
+        console.log("test");
         clearTimeout(timeoutRef.current);
         setSlide(slide === playlistData.length - 1 ? 0 : slide + 1);
     };
