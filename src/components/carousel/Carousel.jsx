@@ -3,7 +3,9 @@ import { axiosSlider } from "../../api/axios";
 import styles from "./Carousel.module.css";
 import ProductPreview from "../productPreview/ProductPreview";
 
-const Carousel = ({ data, posts, playlistId, productData }) => {
+const Carousel = ({ posts, playlistId, productData }) => {
+    const MEDIA_URL = "http://192.168.68.247:1338";
+
     const [playlistData, setPlaylistData] = useState("");
     const [slide, setSlide] = useState(0);
     const [delay, setDelay] = useState(0);
@@ -132,10 +134,7 @@ const Carousel = ({ data, posts, playlistId, productData }) => {
                         return !el.isVideo ? (
                             <img
                                 key={el.id}
-                                src={
-                                    "http://192.168.68.247:1338" +
-                                    el.media.data.attributes.url
-                                }
+                                src={MEDIA_URL + el.media.data.attributes.url}
                                 alt={el.title}
                                 className={
                                     slide === idx
@@ -157,8 +156,7 @@ const Carousel = ({ data, posts, playlistId, productData }) => {
                             >
                                 <source
                                     src={
-                                        "http://192.168.68.247:1338" +
-                                        el.media.data.attributes.url
+                                        MEDIA_URL + el.media.data.attributes.url
                                     }
                                     type="video/mp4"
                                 />
