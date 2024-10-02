@@ -23,20 +23,3 @@ body {
 
     background-color: #303030;
 }
-
-.hidden-form {
-    position: absolute;
-    left: 0;
-    top: 0;
-
-    z-index: -1;
-    opacity: 0;
-
-    width: 200px;
-    height: 50px;
-}
-.hidden-input {
-    z-index: -1;
-    opacity: 0;
-    pointer-events: none;
-}

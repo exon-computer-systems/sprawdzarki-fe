@@ -12,6 +12,7 @@ const Carousel = ({
 }) => {
     const [playlistData, setPlaylistData] = useState("");
     const [slide, setSlide] = useState(0);
+    const [delay, setDelay] = useState(0);
     const [playStartTime, setPlayStartTime] = useState(Date.now());
 
     const videoRef = useRef([]);
@@ -45,15 +46,12 @@ const Carousel = ({
     }, [slide, playlistData]);
 
     useEffect(() => {
-        // console.log(posts);
-
         if (posts) {
             setPlaylistData(posts);
         }
     }, [posts]);
 
     const increaseStats = async (materialId, postId, updatedData) => {
-        // console.log(materialId, postId, updatedData);
         try {
             const materialResponse = await axiosSlider.get(
                 `/api/materials/${materialId}?populate=posts`
@@ -84,11 +82,8 @@ const Carousel = ({
                     posts: updatedPosts,
                 },
             });
-
-            // console.log(res);
         } catch (err) {
             console.warn(err);
-        } finally {
         }
     };
 
@@ -101,12 +96,15 @@ const Carousel = ({
         if (timeSpent >= 1000) {
             const objData = {
                 playsCount: 1,
-                playsTime: (timeSpent / 1000).toFixed(1),
+                playsTime: (timeSpent / 1000 - (delay > 0 ? delay : 0)).toFixed(
+                    1
+                ),
                 fullPlaysCount:
                     playlistData[i].duration * 0.9 * 1000 > timeSpent ? 0 : 1,
             };
             console.log(playlistId, playlistData[i].id, objData);
             increaseStats(playlistId, playlistData[i].id, objData);
+            setDelay(0);
         }
 
         setPlayStartTime(currentTime);
@@ -123,18 +121,32 @@ const Carousel = ({
         }
     }, [productData]);
 
+    useEffect(() => {
+        window.handleData = () => {
+            clearTimeout(timeoutRef.current);
+            setDelay(5);
+            setTimeout(
+                () =>
+                    setSlide(slide === playlistData.length - 1 ? 0 : slide + 1),
+                5000
+            );
+        };
+    });
+
     return (
         <>
-            {productData && <ProductPreview data={productData} />}
+            {/* {productData && <ProductPreview data={productData} />} */}
 
             <section className={styles.carousel}>
                 {playlistData ? (
                     playlistData.map((el, idx) => {
-                        // console.log(el);
                         return !el.isVideo ? (
                             <img
                                 key={el.id}
-                                src={el.media.data.attributes.url}
+                                src={
+                                    "http://192.168.68.247:1338" +
+                                    el.media.data.attributes.url
+                                }
                                 alt={el.title}
                                 className={
                                     slide === idx
@@ -155,14 +167,17 @@ const Carousel = ({
                                 ref={(el) => (videoRef.current[idx] = el)}
                             >
                                 <source
-                                    src={el.media.data.attributes.url}
+                                    src={
+                                        "http://192.168.68.247:1338" +
+                                        el.media.data.attributes.url
+                                    }
                                     type="video/mp4"
                                 />
                             </video>
                         );
                     })
                 ) : (
-                    <p>loading...</p>
+                    <p>Ładowanie materiałów</p>
                 )}
 
                 <span className={styles.indicators}>
